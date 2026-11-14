@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ESU Condolence Poster Generator | University of Jaffna</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-app: #f3f4f6;
+      --panel-bg: #ffffff;
+      --text-main: #111827;
+      --accent: #1f2937;
+      --border: #d1d5db;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-app);
+      color: var(--text-main);
+      padding: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .controls {
+      background: var(--panel-bg);
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      width: 100%;
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .controls h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .field input, .field select {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    .btn-download {
+      margin-top: 8px;
+      padding: 12px 16px;
+      background: #111827;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-download:hover { background: #374151; }
+
+    .hidden { display: none !important; }
+
+    .poster-wrapper {
+      overflow: auto;
+      max-width: 100%;
+    }
+
+    #poster {
+      position: relative;
+      width: 900px;
+      height: 675px;
+      background-color: #f9fafb;
+      background-image: url('assets/bg-lilies.jpg');
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 36px 48px 28px;
+      color: #111111;
+    }
+
+    .poster-frame {
+      position: absolute;
+      inset: 22px;
+      border: 2.5px solid #1a1a1a;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .poster-content {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      padding: 10px 40px;
+    }
+
+    .union-header {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 14px;
+      color: #111;
+    }
+
+    .photo-container {
+      position: relative;
+      width: 170px;
+      height: 200px;
+      margin: 6px auto 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .student-photo {
+      width: 155px;
+      height: 185px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #d1d5db;
+      background: #e5e7eb;
+    }
+
+    .floral-overlay {
+      position: absolute;
+      bottom: -10px;
+      left: -18px;
+      width: 110px;
+      pointer-events: none;
+    }
+
+    .main-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin: 8px 0 14px;
+      text-transform: uppercase;
+      color: #0f0f0f;
+    }
+
+    .description-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.45;
+      max-width: 680px;
+      color: #1a1a1a;
+    }
+
+    .description-text strong {
+      font-weight: 700;
+    }
+
+    .poster-footer {
+      position: relative;
+      z-index: 3;
+      background: rgba(180, 180, 180, 0.55);
+      backdrop-filter: blur(2px);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 0 12px 6px;
+    }
+
+    .union-logo {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+
+    .footer-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: #111;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="controls">
+    <h2>Condolence Poster Generator</h2>
+
+    <div class="field">
+      <label for="templateType">Template Type</label>
+      <select id="templateType">
+        <option value="student">Student Condolence (with Photo)</option>
+        <option value="family">Family Condolence (Mother / Father / Sibling)</option>
+      </select>
+    </div>
+
+    <div class="field" id="relationField">
+      <label for="relation">Deceased Relation (Family Template)</label>
+      <select id="relation">
+        <option value="mother">Mother</option>
+        <option value="father">Father</option>
+        <option value="brother">Brother</option>
+        <option value="sister">Sister</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="personName" id="nameLabel">Student Name (Bold)</label>
+      <input type="text" id="personName" placeholder="e.g., Thamilselvan Thanesh" value="Thamilselvan Thanesh" />
+    </div>
+
+    <div class="field">
+      <label for="batch">Batch (Bold)</label>
+      <input type="text" id="batch" placeholder="e.g., E25" value="E25" />
+    </div>
+
+    <div class="field" id="photoField">
+      <label for="photoUpload">Student Photo</label>
+      <input type="file" id="photoUpload" accept="image/*" />
+    </div>
+
+    <button class="btn-download" id="downloadBtn">Download Poster as PNG</button>
+  </div>
+
+  <div class="poster-wrapper">
+    <div id="poster">
+      <div class="poster-frame"></div>
+
+      <div class="poster-content">
+        <div class="union-header">
+          The Engineering Students’ Union of the<br />
+          University of Jaffna extends its,
+        </div>
+
+        <div class="photo-container" id="photoContainer">
+          <img id="studentPhotoPreview" class="student-photo" src="https://via.placeholder.com/155x185?text=Photo" alt="Student Photo" />
+          <img class="floral-overlay" src="assets/floral-accent.png" alt="" onerror="this.style.display='none'" />
+        </div>
+
+        <div class="main-title">HEARTFELT CONDOLENCES</div>
+
+        <div class="description-text" id="posterDescription"></div>
+      </div>
+
+      <div class="poster-footer">
+        <img class="union-logo" src="assets/union-logo.png" alt="ESU Logo" onerror="this.style.display='none'" />
+        <div class="footer-text">The Engineering Students’ Union of the University of Jaffna</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const templateType = document.getElementById('templateType');
+    const relationField = document.getElementById('relationField');
+    const relationSelect = document.getElementById('relation');
+    const personNameInput = document.getElementById('personName');
+    const nameLabel = document.getElementById('nameLabel');
+    const batchInput = document.getElementById('batch');
+    const photoField = document.getElementById('photoField');
+    const photoUpload = document.getElementById('photoUpload');
+    const photoContainer = document.getElementById('photoContainer');
+    const studentPhotoPreview = document.getElementById('studentPhotoPreview');
+    const posterDescription = document.getElementById('posterDescription');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    function updatePoster() {
+      const type = templateType.value;
+      const name = personNameInput.value.trim() || 'Name';
+      const batch = batchInput.value.trim() || 'E2X';
+      const relation = relationSelect.value;
+
+      if (type === 'student') {
+        relationField.classList.add('hidden');
+        photoField.classList.remove('hidden');
+        photoContainer.classList.remove('hidden');
+        nameLabel.textContent = 'Student Name (Bold)';
+
+        posterDescription.innerHTML =
+          `With profound grief and sadness, we share the passing of our beloved fellow student of the <strong>${batch}</strong> batch,<br/><strong>${name}</strong>.<br/>Our heartfelt sympathies are with his family, friends, and batchmates during this difficult time.`;
+      } else {
+        relationField.classList.remove('hidden');
+        photoField.classList.add('hidden');
+        photoContainer.classList.add('hidden');
+        nameLabel.textContent = 'Student Name (Bold)';
+
+        posterDescription.innerHTML =
+          `With profound sorrow, we extend our deepest sympathies to <strong>${name}</strong> of the <strong>${batch}</strong> batch on the untimely passing of their beloved ${relation}.<br/>May the departed soul rest in peace, and may the family find strength during this time of grief.`;
+      }
+    }
+
+    photoUpload.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        studentPhotoPreview.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    [templateType, relationSelect, personNameInput, batchInput].forEach((el) => {
+      el.addEventListener('input', updatePoster);
+      el.addEventListener('change', updatePoster);
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      const poster = document.getElementById('poster');
+      html2canvas(poster, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true
+      }).then((canvas) => {
+        const link = document.createElement('a');
+        const safeName = (personNameInput.value.trim() || 'condolence').replace(/\s+/g, '_');
+        link.download = `ESU_Condolence_${safeName}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    });
+
+    updatePoster();
+  </script>
+</body>
+</html>
