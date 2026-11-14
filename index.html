@@ -11,8 +11,10 @@
       --bg-app: #f3f4f6;
       --panel-bg: #ffffff;
       --text-main: #111827;
-      --accent: #1f2937;
       --border: #d1d5db;
+      --floral-size: 250px;
+      --floral-left: -62px;
+      --floral-top: 20px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -48,18 +50,8 @@
       padding-bottom: 10px;
     }
 
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .field label {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #374151;
-    }
-
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 0.85rem; font-weight: 600; color: #374151; }
     .field input, .field select {
       padding: 10px 12px;
       border: 1px solid var(--border);
@@ -72,39 +64,32 @@
       margin-top: 8px;
       padding: 12px 16px;
       background: #111827;
-      color: #ffffff;
+      color: #fff;
       border: none;
       border-radius: 8px;
       font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
     }
-
     .btn-download:hover { background: #374151; }
-
     .hidden { display: none !important; }
 
-    .poster-wrapper {
-      overflow: auto;
-      max-width: 100%;
-    }
+    .poster-wrapper { overflow: auto; max-width: 100%; }
 
     #poster {
       position: relative;
       width: 900px;
       height: 675px;
       background-color: #f9fafb;
-      background-image: url('assets/bg-lilies.jpg');
+      background-image: url('assets/bg-lilies.png');
       background-size: cover;
       background-position: center;
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0,0,0,0.15);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      padding: 36px 48px 28px;
-      color: #111111;
+      padding: 40px 48px 36px;
+      color: #111;
     }
 
     .poster-frame {
@@ -118,13 +103,13 @@
     .poster-content {
       position: relative;
       z-index: 3;
-      text-align: center;
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      flex: 1;
-      padding: 10px 40px;
+      text-align: center;
+      padding: 0 40px;
     }
 
     .union-header {
@@ -132,34 +117,37 @@
       font-size: 24px;
       font-weight: 600;
       line-height: 1.3;
-      margin-bottom: 14px;
-      color: #111;
+      margin-bottom: 12px;
     }
 
     .photo-container {
       position: relative;
-      width: 170px;
-      height: 200px;
-      margin: 6px auto 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 150px;
+      height: 180px;
+      margin: 4px auto 14px;
     }
 
     .student-photo {
-      width: 155px;
-      height: 185px;
+      position: relative;
+      z-index: 1;
+      width: 150px;
+      height: 180px;
       border-radius: 50%;
       object-fit: cover;
+      object-position: center top;
       border: 3px solid #d1d5db;
       background: #e5e7eb;
+      display: block;
     }
 
     .floral-overlay {
       position: absolute;
-      bottom: -10px;
-      left: -18px;
-      width: 110px;
+      z-index: 2;
+      width: var(--floral-size);
+      height: var(--floral-size);
+      left: var(--floral-left);
+      top: var(--floral-top);
+      transform: scaleY(-1);
       pointer-events: none;
     }
 
@@ -168,49 +156,37 @@
       font-size: 38px;
       font-weight: 700;
       letter-spacing: 1.5px;
-      margin: 8px 0 14px;
+      margin: 6px 0 12px;
       text-transform: uppercase;
-      color: #0f0f0f;
     }
 
     .description-text {
       font-family: 'Cormorant Garamond', serif;
       font-size: 22px;
       font-weight: 500;
-      line-height: 1.45;
+      line-height: 1.4;
       max-width: 680px;
-      color: #1a1a1a;
     }
-
-    .description-text strong {
-      font-weight: 700;
-    }
+    .description-text strong { font-weight: 700; }
 
     .poster-footer {
       position: relative;
       z-index: 3;
       background: rgba(180, 180, 180, 0.55);
-      backdrop-filter: blur(2px);
-      padding: 10px 24px;
+      padding: 8px 24px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 16px;
-      margin: 0 12px 6px;
+      margin: 0 12px;
     }
 
-    .union-logo {
-      width: 44px;
-      height: 44px;
-      object-fit: contain;
-      border-radius: 50%;
-    }
+    .union-logo { width: 46px; height: 46px; object-fit: contain; }
 
     .footer-text {
       font-family: 'Cormorant Garamond', serif;
       font-size: 20px;
       font-weight: 600;
-      color: #111;
     }
   </style>
 </head>
@@ -238,13 +214,13 @@
     </div>
 
     <div class="field">
-      <label for="personName" id="nameLabel">Student Name (Bold)</label>
-      <input type="text" id="personName" placeholder="e.g., Thamilselvan Thanesh" value="Thamilselvan Thanesh" />
+      <label for="personName">Name (Bold)</label>
+      <input type="text" id="personName" value="Thamilselvan Thanesh" />
     </div>
 
     <div class="field">
       <label for="batch">Batch (Bold)</label>
-      <input type="text" id="batch" placeholder="e.g., E25" value="E25" />
+      <input type="text" id="batch" value="E25" />
     </div>
 
     <div class="field" id="photoField">
@@ -266,17 +242,17 @@
         </div>
 
         <div class="photo-container" id="photoContainer">
-          <img id="studentPhotoPreview" class="student-photo" src="https://via.placeholder.com/155x185?text=Photo" alt="Student Photo" />
+          <img id="studentPhotoPreview" class="student-photo" alt="Student Photo"
+               src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='180'%3E%3Crect width='100%25' height='100%25' fill='%23e5e7eb'/%3E%3Ctext x='50%25' y='50%25' fill='%239ca3af' font-size='16' text-anchor='middle' font-family='sans-serif'%3EPhoto%3C/text%3E%3C/svg%3E" />
           <img class="floral-overlay" src="assets/floral-accent.png" alt="" onerror="this.style.display='none'" />
         </div>
 
         <div class="main-title">HEARTFELT CONDOLENCES</div>
-
         <div class="description-text" id="posterDescription"></div>
       </div>
 
       <div class="poster-footer">
-        <img class="union-logo" src="assets/union-logo.png" alt="ESU Logo" onerror="this.style.display='none'" />
+        <img class="union-logo" src="assets/%20union-logo.png" alt="ESU Logo" onerror="this.style.display='none'" />
         <div class="footer-text">The Engineering Students’ Union of the University of Jaffna</div>
       </div>
     </div>
@@ -287,7 +263,6 @@
     const relationField = document.getElementById('relationField');
     const relationSelect = document.getElementById('relation');
     const personNameInput = document.getElementById('personName');
-    const nameLabel = document.getElementById('nameLabel');
     const batchInput = document.getElementById('batch');
     const photoField = document.getElementById('photoField');
     const photoUpload = document.getElementById('photoUpload');
@@ -296,26 +271,26 @@
     const posterDescription = document.getElementById('posterDescription');
     const downloadBtn = document.getElementById('downloadBtn');
 
+    function escapeHtml(s) {
+      return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
     function updatePoster() {
       const type = templateType.value;
-      const name = personNameInput.value.trim() || 'Name';
-      const batch = batchInput.value.trim() || 'E2X';
+      const name = escapeHtml(personNameInput.value.trim() || 'Name');
+      const batch = escapeHtml(batchInput.value.trim() || 'E2X');
       const relation = relationSelect.value;
 
       if (type === 'student') {
         relationField.classList.add('hidden');
         photoField.classList.remove('hidden');
         photoContainer.classList.remove('hidden');
-        nameLabel.textContent = 'Student Name (Bold)';
-
         posterDescription.innerHTML =
           `With profound grief and sadness, we share the passing of our beloved fellow student of the <strong>${batch}</strong> batch,<br/><strong>${name}</strong>.<br/>Our heartfelt sympathies are with his family, friends, and batchmates during this difficult time.`;
       } else {
         relationField.classList.remove('hidden');
         photoField.classList.add('hidden');
         photoContainer.classList.add('hidden');
-        nameLabel.textContent = 'Student Name (Bold)';
-
         posterDescription.innerHTML =
           `With profound sorrow, we extend our deepest sympathies to <strong>${name}</strong> of the <strong>${batch}</strong> batch on the untimely passing of their beloved ${relation}.<br/>May the departed soul rest in peace, and may the family find strength during this time of grief.`;
       }
@@ -325,9 +300,7 @@
       const file = e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = (event) => {
-        studentPhotoPreview.src = event.target.result;
-      };
+      reader.onload = (ev) => { studentPhotoPreview.src = ev.target.result; };
       reader.readAsDataURL(file);
     });
 
@@ -337,12 +310,7 @@
     });
 
     downloadBtn.addEventListener('click', () => {
-      const poster = document.getElementById('poster');
-      html2canvas(poster, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true
-      }).then((canvas) => {
+      html2canvas(document.getElementById('poster'), { scale: 2, useCORS: true }).then((canvas) => {
         const link = document.createElement('a');
         const safeName = (personNameInput.value.trim() || 'condolence').replace(/\s+/g, '_');
         link.download = `ESU_Condolence_${safeName}.png`;
