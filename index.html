@@ -16,8 +16,9 @@
       /* Background lilies intensity (0 = hidden, 1 = full) */
       --bg-opacity: 0.14;
 
-      /* Photo frame (assets/photo-frame.png, aspect 1080:1250) */
-      --frame-height: 270px;
+      /* Photo frame. Position/size are auto-detected from the frame image; these are fallbacks */
+      --frame-height: 250px;
+      --frame-aspect: 0.864;
       --photo-w: 46%;
       --photo-h: 54%;
       --photo-x: 49.3%;
@@ -29,6 +30,10 @@
       --corner-size: 135px;
       --corner-gap: 100px;
       --corner-offset: 12px;
+
+      /* Footer */
+      --bar-height: 46px;
+      --logo-size: 80px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -81,11 +86,10 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.15);
       display: flex;
       flex-direction: column;
-      padding: 36px 48px 34px;
+      padding: 36px 48px 46px;
       color: #111;
     }
 
-    /* Faded lily background */
     .bg-layer {
       position: absolute; inset: 0; z-index: 0;
       background-image: url('assets/bg-lilies.png');
@@ -112,11 +116,7 @@
     .line-left { left: var(--border-inset); }
     .line-right { right: var(--border-inset); }
 
-    /* Corner ornaments: source art is a bottom-left corner piece */
-    .corner {
-      position: absolute; z-index: 2; pointer-events: none;
-      width: var(--corner-size);
-    }
+    .corner { position: absolute; z-index: 2; pointer-events: none; width: var(--corner-size); }
     .corner-bl { left: var(--corner-offset); bottom: var(--corner-offset); }
     .corner-tl { left: var(--corner-offset); top: var(--corner-offset); transform: scaleY(-1); }
     .corner-tr { right: var(--corner-offset); top: var(--corner-offset); transform: scale(-1, -1); }
@@ -127,20 +127,29 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       text-align: center; padding: 0 50px;
     }
+    .block { display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; }
+    .block > * { flex-shrink: 0; }
 
-    .union-header {
-      flex-shrink: 0;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 22px; font-weight: 600; line-height: 1.25; margin-bottom: 6px;
-    }
+    .serif { font-family: 'Cormorant Garamond', serif; color: #111; }
+    .display { font-family: 'Playfair Display', serif; color: #0f0f0f; }
+    .name-display { font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1.15; color: #0f0f0f; }
 
-    /* Student photo with wreath frame */
+    /* ---------- Family template ---------- */
+    .fam-header { font-size: 28px; font-weight: 600; line-height: 1.25; margin-bottom: 8px; }
+    .fam-title { font-size: 50px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
+    .fam-lead { font-size: 27px; font-weight: 600; line-height: 1.3; }
+    .fam-name { font-size: 50px; margin: 6px 0 6px; }
+    .fam-lead strong { font-weight: 700; }
+    .fam-closing { font-size: 25px; font-weight: 600; line-height: 1.3; max-width: 700px; margin-top: 12px; }
+
+    /* ---------- Student template ---------- */
+    .mem-title { font-size: 28px; font-weight: 700; letter-spacing: 4px; line-height: 1.1; }
+    .mem-sub { font-size: 21px; font-weight: 600; font-style: italic; margin: 2px 0 4px; }
     .photo-container {
-      position: relative;
-      flex-shrink: 0;
+      position: relative; flex-shrink: 0;
       height: var(--frame-height);
-      width: calc(var(--frame-height) * 1080 / 1250);
-      margin: 0 auto 4px;
+      width: calc(var(--frame-height) * var(--frame-aspect));
+      margin: 0 auto 2px;
     }
     .student-photo {
       position: absolute; z-index: 1;
@@ -151,34 +160,22 @@
       object-fit: cover; object-position: center top;
       background: #e5e7eb;
     }
-    .photo-frame-img {
-      position: absolute; left: 0; top: 0; z-index: 2;
-      width: 100%; height: 100%; pointer-events: none;
-    }
+    .photo-frame-img { position: absolute; left: 0; top: 0; z-index: 2; width: 100%; height: 100%; pointer-events: none; }
+    .stu-name { font-size: 40px; margin: 2px 0 2px; }
+    .stu-batch { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+    .stu-batch strong { font-weight: 700; }
+    .stu-text { font-size: 22px; font-weight: 600; line-height: 1.28; max-width: 720px; }
 
-    .main-title {
-      flex-shrink: 0;
-      font-family: 'Playfair Display', serif;
-      font-size: 36px; font-weight: 700; letter-spacing: 1.5px;
-      margin: 4px 0 8px; text-transform: uppercase;
-    }
-
-    .description-text {
-      flex-shrink: 0;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 20px; font-weight: 600; line-height: 1.3;
-      max-width: 640px; color: #111;
-    }
-    .description-text strong { font-weight: 700; }
-
+    /* ---------- Footer ---------- */
     .poster-footer {
       position: relative; z-index: 3;
+      height: var(--bar-height);
+      margin: calc((var(--logo-size) - var(--bar-height)) / 2) 12px 0;
       background: rgba(180, 180, 180, 0.55);
-      padding: 8px 24px; display: flex; align-items: center; justify-content: center;
-      gap: 16px; margin: 0 12px;
+      display: flex; align-items: center; justify-content: center; gap: 18px;
     }
-    .union-logo { width: 46px; height: 46px; object-fit: contain; }
-    .footer-text { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; }
+    .union-logo { width: var(--logo-size); height: var(--logo-size); object-fit: contain; flex-shrink: 0; }
+    .footer-text { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -237,19 +234,33 @@
       <img class="corner corner-br" src="assets/floral-accent.png?v=2" alt="" />
 
       <div class="poster-content">
-        <div class="union-header">
-          The Engineering Students’ Union of the<br />
-          University of Jaffna extends its,
+
+        <!-- Family template -->
+        <div class="block" id="familyBlock">
+          <div class="fam-header serif">The Engineering Students’ Union of the<br />University of Jaffna extends its,</div>
+          <div class="fam-title display">HEARTFELT CONDOLENCES</div>
+          <div class="fam-lead serif">With profound sorrow, we extend our deepest sympathies to</div>
+          <div class="fam-name name-display" id="famName"></div>
+          <div class="fam-lead serif">of the <strong id="famBatch"></strong> batch, on the passing of their beloved <span id="famRelation"></span>.</div>
+          <div class="fam-closing serif">In this hour of immense grief, may the departed soul rest in eternal peace, and may your family find comfort, courage, and strength. Our thoughts and prayers are with you, and the entire Engineering Students’ Union stands beside you.</div>
         </div>
 
-        <div class="photo-container" id="photoContainer">
-          <img id="studentPhotoPreview" class="student-photo" alt="Student Photo"
-               src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='180'%3E%3Crect width='100%25' height='100%25' fill='%23e5e7eb'/%3E%3Ctext x='50%25' y='50%25' fill='%239ca3af' font-size='16' text-anchor='middle' font-family='sans-serif'%3EPhoto%3C/text%3E%3C/svg%3E" />
-          <img class="photo-frame-img" src="assets/photo-frame.png?v=2" alt="" />
+        <!-- Student template -->
+        <div class="block" id="studentBlock">
+          <div class="mem-title display">IN LOVING MEMORY</div>
+          <div class="mem-sub serif">Gone from our sight, but never from our hearts</div>
+
+          <div class="photo-container" id="photoContainer">
+            <img id="studentPhotoPreview" class="student-photo" alt="Student Photo"
+                 src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='180'%3E%3Crect width='100%25' height='100%25' fill='%23e5e7eb'/%3E%3Ctext x='50%25' y='50%25' fill='%239ca3af' font-size='16' text-anchor='middle' font-family='sans-serif'%3EPhoto%3C/text%3E%3C/svg%3E" />
+            <img id="frameImg" class="photo-frame-img" src="assets/photo-frame.png?v=2" alt="" />
+          </div>
+
+          <div class="stu-name name-display" id="stuName"></div>
+          <div class="stu-batch serif">Member of the <strong id="stuBatch"></strong> batch, Faculty of Engineering, University of Jaffna</div>
+          <div class="stu-text serif">Our beloved friend and valued colleague, whose kindness, laughter, and shared memories will live on in each of us. The place held in our hearts can never be filled, and the absence will be deeply felt. The Engineering Students’ Union extends its heartfelt condolences to the family, friends, and batchmates.</div>
         </div>
 
-        <div class="main-title">HEARTFELT CONDOLENCES</div>
-        <div class="description-text" id="posterDescription"></div>
       </div>
 
       <div class="poster-footer">
@@ -260,41 +271,28 @@
   </div>
 
   <script>
-    const templateType = document.getElementById('templateType');
-    const relationField = document.getElementById('relationField');
-    const relationSelect = document.getElementById('relation');
-    const personNameInput = document.getElementById('personName');
-    const batchInput = document.getElementById('batch');
-    const photoField = document.getElementById('photoField');
-    const photoUpload = document.getElementById('photoUpload');
-    const photoContainer = document.getElementById('photoContainer');
-    const studentPhotoPreview = document.getElementById('studentPhotoPreview');
-    const posterDescription = document.getElementById('posterDescription');
-    const downloadBtn = document.getElementById('downloadBtn');
-
-    function escapeHtml(s) {
-      return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    }
+    const $ = (id) => document.getElementById(id);
+    const templateType = $('templateType'), relationField = $('relationField'), relationSelect = $('relation');
+    const personNameInput = $('personName'), batchInput = $('batch');
+    const photoField = $('photoField'), photoUpload = $('photoUpload');
+    const familyBlock = $('familyBlock'), studentBlock = $('studentBlock');
+    const studentPhotoPreview = $('studentPhotoPreview');
 
     function updatePoster() {
-      const type = templateType.value;
-      const name = escapeHtml(personNameInput.value.trim() || 'Name');
-      const batch = escapeHtml(batchInput.value.trim() || 'E2X');
-      const relation = relationSelect.value;
+      const isStudent = templateType.value === 'student';
+      const name = personNameInput.value.trim() || 'Name';
+      const batch = batchInput.value.trim() || 'E2X';
 
-      if (type === 'student') {
-        relationField.classList.add('hidden');
-        photoField.classList.remove('hidden');
-        photoContainer.classList.remove('hidden');
-        posterDescription.innerHTML =
-          `With profound grief and sadness, we share the passing of our beloved fellow student of the <strong>${batch}</strong> batch,<br/><strong>${name}</strong>.<br/>Our heartfelt sympathies are with his family, friends, and batchmates during this difficult time.`;
-      } else {
-        relationField.classList.remove('hidden');
-        photoField.classList.add('hidden');
-        photoContainer.classList.add('hidden');
-        posterDescription.innerHTML =
-          `With profound sorrow, we extend our deepest sympathies to <strong>${name}</strong> of the <strong>${batch}</strong> batch on the untimely passing of their beloved ${relation}.<br/>May the departed soul rest in peace, and may the family find strength during this time of grief.`;
-      }
+      studentBlock.classList.toggle('hidden', !isStudent);
+      familyBlock.classList.toggle('hidden', isStudent);
+      relationField.classList.toggle('hidden', isStudent);
+      photoField.classList.toggle('hidden', !isStudent);
+
+      $('famName').textContent = name;
+      $('famBatch').textContent = batch;
+      $('famRelation').textContent = relationSelect.value;
+      $('stuName').textContent = name;
+      $('stuBatch').textContent = batch;
     }
 
     photoUpload.addEventListener('change', (e) => {
@@ -310,8 +308,68 @@
       el.addEventListener('change', updatePoster);
     });
 
-    downloadBtn.addEventListener('click', () => {
-      html2canvas(document.getElementById('poster'), { scale: 2, useCORS: true }).then((canvas) => {
+    /* Detect the oval opening of the wreath frame and fit the photo to it */
+    function calibrateFrame(img) {
+      try {
+        const nw = img.naturalWidth, nh = img.naturalHeight;
+        if (!nw || !nh) return;
+        const root = document.documentElement.style;
+        root.setProperty('--frame-aspect', (nw / nh).toFixed(4));
+
+        const W = 400, H = Math.round(W * nh / nw);
+        const c = document.createElement('canvas');
+        c.width = W; c.height = H;
+        const ctx = c.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(img, 0, 0, W, H);
+        const d = ctx.getImageData(0, 0, W, H).data;
+        const dark = (x, y) => {
+          const i = (y * W + x) * 4;
+          if (d[i + 3] < 80) return false;
+          return (d[i] + d[i + 1] + d[i + 2]) / 3 < 170;
+        };
+
+        const cx = 0.5 * W, cy = 0.63 * H, N = 90;
+        const dist = [];
+        for (let k = 0; k < N; k++) {
+          const a = (k / N) * Math.PI * 2;
+          let r = 0, x = cx, y = cy;
+          while (x >= 0 && x < W && y >= 0 && y < H && !dark(Math.round(x), Math.round(y))) {
+            r++; x = cx + r * Math.cos(a); y = cy + r * Math.sin(a);
+          }
+          dist.push(r);
+        }
+        const smooth = dist.map((_, k) => {
+          const w = [];
+          for (let j = -2; j <= 2; j++) w.push(dist[(k + j + N) % N]);
+          return w.sort((p, q) => p - q)[2];
+        });
+
+        let minX = W, maxX = 0, minY = H, maxY = 0;
+        smooth.forEach((r, k) => {
+          const a = (k / N) * Math.PI * 2;
+          const px = cx + r * Math.cos(a), py = cy + r * Math.sin(a);
+          minX = Math.min(minX, px); maxX = Math.max(maxX, px);
+          minY = Math.min(minY, py); maxY = Math.max(maxY, py);
+        });
+
+        const wn = (maxX - minX) / W, hn = (maxY - minY) / H;
+        if (wn < 0.2 || wn > 0.8 || hn < 0.2 || hn > 0.8) return;
+
+        const grow = 1.04;
+        root.setProperty('--photo-x', (((minX + maxX) / 2 / W) * 100).toFixed(2) + '%');
+        root.setProperty('--photo-y', (((minY + maxY) / 2 / H) * 100).toFixed(2) + '%');
+        root.setProperty('--photo-w', (wn * 100 * grow).toFixed(2) + '%');
+        root.setProperty('--photo-h', (hn * 100 * grow).toFixed(2) + '%');
+      } catch (err) {
+        console.warn('Frame auto-fit skipped:', err);
+      }
+    }
+    const frameImg = $('frameImg');
+    if (frameImg.complete) calibrateFrame(frameImg);
+    frameImg.addEventListener('load', () => calibrateFrame(frameImg));
+
+    $('downloadBtn').addEventListener('click', () => {
+      html2canvas($('poster'), { scale: 2, useCORS: true }).then((canvas) => {
         const link = document.createElement('a');
         const safeName = (personNameInput.value.trim() || 'condolence').replace(/\s+/g, '_');
         link.download = `ESU_Condolence_${safeName}.png`;
