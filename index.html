@@ -13,10 +13,12 @@
       --text-main: #111827;
       --border: #d1d5db;
 
-      /* Photo floral (student template) */
-      --photo-floral-size: 190px;
-      --photo-floral-left: -38px;
-      --photo-floral-top: 40px;
+      /* Photo frame (assets/photo-frame.png, aspect 1080:1250) */
+      --frame-height: 300px;
+      --photo-w: 46%;
+      --photo-h: 54%;
+      --photo-x: 49.3%;
+      --photo-y: 63.2%;
 
       /* Corner decorations */
       --cluster-size: 230px;
@@ -73,7 +75,7 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.15);
       display: flex;
       flex-direction: column;
-      padding: 40px 48px 36px;
+      padding: 36px 48px 34px;
       color: #111;
     }
 
@@ -97,31 +99,39 @@
 
     .union-header {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 24px; font-weight: 600; line-height: 1.3; margin-bottom: 12px;
+      font-size: 22px; font-weight: 600; line-height: 1.25; margin-bottom: 6px;
     }
 
-    .photo-container { position: relative; width: 150px; height: 180px; margin: 4px auto 18px; }
-    .student-photo {
-      position: relative; z-index: 1; width: 150px; height: 180px;
-      border-radius: 50%; object-fit: cover; object-position: center top;
-      border: 3px solid #d1d5db; background: #e5e7eb; display: block;
+    /* Student photo with wreath frame */
+    .photo-container {
+      position: relative;
+      height: var(--frame-height);
+      aspect-ratio: 1080 / 1250;
+      margin: 0 auto 4px;
     }
-    .photo-floral {
-      position: absolute; z-index: 2;
-      width: var(--photo-floral-size); height: var(--photo-floral-size);
-      left: var(--photo-floral-left); top: var(--photo-floral-top);
-      transform: scaleY(-1); pointer-events: none;
+    .student-photo {
+      position: absolute; z-index: 1;
+      left: var(--photo-x); top: var(--photo-y);
+      width: var(--photo-w); height: var(--photo-h);
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      object-fit: cover; object-position: center top;
+      background: #e5e7eb;
+    }
+    .photo-frame-img {
+      position: absolute; inset: 0; z-index: 2;
+      width: 100%; height: 100%; pointer-events: none;
     }
 
     .main-title {
       font-family: 'Playfair Display', serif;
-      font-size: 38px; font-weight: 700; letter-spacing: 1.5px;
-      margin: 6px 0 12px; text-transform: uppercase;
+      font-size: 36px; font-weight: 700; letter-spacing: 1.5px;
+      margin: 4px 0 8px; text-transform: uppercase;
     }
 
     .description-text {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 22px; font-weight: 600; line-height: 1.4;
+      font-size: 21px; font-weight: 600; line-height: 1.3;
       max-width: 600px; color: #111;
     }
     .description-text strong { font-weight: 700; }
@@ -195,7 +205,7 @@
         <div class="photo-container" id="photoContainer">
           <img id="studentPhotoPreview" class="student-photo" alt="Student Photo"
                src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='180'%3E%3Crect width='100%25' height='100%25' fill='%23e5e7eb'/%3E%3Ctext x='50%25' y='50%25' fill='%239ca3af' font-size='16' text-anchor='middle' font-family='sans-serif'%3EPhoto%3C/text%3E%3C/svg%3E" />
-          <img class="photo-floral" src="assets/floral-accent.png" alt="" onerror="this.style.display='none'" />
+          <img class="photo-frame-img" src="assets/photo-frame.png" alt="" onerror="this.style.display='none'" />
         </div>
 
         <div class="main-title">HEARTFELT CONDOLENCES</div>
