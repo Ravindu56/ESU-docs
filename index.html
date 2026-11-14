@@ -166,14 +166,17 @@
       width: calc(var(--frame-height) * var(--frame-aspect));
       margin: 0 auto 2px;
     }
+    /* Photo is a background (not <img object-fit>) so html2canvas exports it without stretching */
     .student-photo {
       position: absolute; z-index: 1;
       left: var(--photo-x); top: var(--photo-y);
       width: var(--photo-w); height: var(--photo-h);
       transform: translate(-50%, -50%);
       border-radius: 50%;
-      object-fit: cover; object-position: center top;
-      background: #e5e7eb;
+      background-color: #e5e7eb;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center top;
     }
     .photo-frame-img { position: absolute; left: 0; top: 0; z-index: 2; width: 100%; height: 100%; pointer-events: none; }
     .stu-name { font-size: var(--fs-stu-name); margin: 2px 0 4px; }
@@ -266,8 +269,7 @@
           <div class="mem-sub serif">Gone from our sight, but never from our hearts</div>
 
           <div class="photo-container" id="photoContainer">
-            <img id="studentPhotoPreview" class="student-photo" alt="Student Photo"
-                 src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='180'%3E%3Crect width='100%25' height='100%25' fill='%23e5e7eb'/%3E%3Ctext x='50%25' y='50%25' fill='%239ca3af' font-size='16' text-anchor='middle' font-family='sans-serif'%3EPhoto%3C/text%3E%3C/svg%3E" />
+            <div id="studentPhotoPreview" class="student-photo" role="img" aria-label="Student photo"></div>
             <img id="frameImg" class="photo-frame-img" src="assets/photo-frame.png?v=2" alt="" />
           </div>
 
@@ -314,7 +316,9 @@
       const file = e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = (ev) => { studentPhotoPreview.src = ev.target.result; };
+      reader.onload = (ev) => {
+        studentPhotoPreview.style.backgroundImage = 'url("' + ev.target.result + '")';
+      };
       reader.readAsDataURL(file);
     });
 
