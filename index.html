@@ -23,8 +23,12 @@
       --photo-x: 49.3%;
       --photo-y: 63.2%;
 
-      /* Corner swirl ornaments */
-      --accent-size: 180px;
+      /* Border: lines + corner ornaments (assets/floral-accent.png) */
+      --border-inset: 22px;
+      --border-width: 2.5px;
+      --corner-size: 135px;
+      --corner-gap: 100px;
+      --corner-offset: 12px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -91,15 +95,32 @@
       pointer-events: none;
     }
 
-    /* Corner swirl ornaments */
-    .deco { position: absolute; z-index: 1; pointer-events: none; }
-    .deco-accent-tl { width: var(--accent-size); top: -26px; left: -22px; }
-    .deco-accent-br { width: var(--accent-size); bottom: 70px; right: -22px; transform: rotate(180deg); }
-
-    .poster-frame {
-      position: absolute; inset: 22px; border: 2.5px solid #1a1a1a;
-      pointer-events: none; z-index: 2;
+    /* Border lines (stop short of the corners) */
+    .line { position: absolute; z-index: 2; background: #1a1a1a; pointer-events: none; }
+    .line-top, .line-bottom {
+      left: calc(var(--border-inset) + var(--corner-gap));
+      right: calc(var(--border-inset) + var(--corner-gap));
+      height: var(--border-width);
     }
+    .line-left, .line-right {
+      top: calc(var(--border-inset) + var(--corner-gap));
+      bottom: calc(var(--border-inset) + var(--corner-gap));
+      width: var(--border-width);
+    }
+    .line-top { top: var(--border-inset); }
+    .line-bottom { bottom: var(--border-inset); }
+    .line-left { left: var(--border-inset); }
+    .line-right { right: var(--border-inset); }
+
+    /* Corner ornaments: source art is a bottom-left corner piece */
+    .corner {
+      position: absolute; z-index: 2; pointer-events: none;
+      width: var(--corner-size);
+    }
+    .corner-bl { left: var(--corner-offset); bottom: var(--corner-offset); }
+    .corner-tl { left: var(--corner-offset); top: var(--corner-offset); transform: scaleY(-1); }
+    .corner-tr { right: var(--corner-offset); top: var(--corner-offset); transform: scale(-1, -1); }
+    .corner-br { right: var(--corner-offset); bottom: var(--corner-offset); transform: scaleX(-1); }
 
     .poster-content {
       position: relative; z-index: 3; flex: 1;
@@ -204,10 +225,16 @@
   <div class="poster-wrapper">
     <div id="poster">
       <div class="bg-layer"></div>
-      <img class="deco deco-accent-tl" src="assets/floral-accent.png" alt="" onerror="this.style.display='none'" />
-      <img class="deco deco-accent-br" src="assets/floral-accent.png" alt="" onerror="this.style.display='none'" />
 
-      <div class="poster-frame"></div>
+      <div class="line line-top"></div>
+      <div class="line line-bottom"></div>
+      <div class="line line-left"></div>
+      <div class="line line-right"></div>
+
+      <img class="corner corner-tl" src="assets/floral-accent.png?v=2" alt="" />
+      <img class="corner corner-tr" src="assets/floral-accent.png?v=2" alt="" />
+      <img class="corner corner-bl" src="assets/floral-accent.png?v=2" alt="" />
+      <img class="corner corner-br" src="assets/floral-accent.png?v=2" alt="" />
 
       <div class="poster-content">
         <div class="union-header">
